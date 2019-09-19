@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: AuctionApplication
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: achmad.muharram
+Implementation-Vendor-Id: com.fadhit
+Build-Jdk: 1.8.0_172
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/AuctionApplication
+Created-By: Maven Integration for Eclipse
+

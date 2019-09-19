@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>List Item</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div th:include="navbar"></div>
+
+<div class="container">
+    <div style="width:auto;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
+        <div class="card">
+            <div class="card-header">
+                <h3>List Of Item</h3>
+            </div>
+            <div class="card-block" style="padding: 24px;">
+                <!--Table-->
+        <table id="tablePreview" class="table table-hover">
+        <!--Table head-->
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Initial Price</th>
+              <th>Status</th>
+              <th>Time Limit</th>
+              <th>Auction Type</th>
+            </tr>
+          </thead>
+          <!--Table head-->
+          
+          <!--Table body-->
+          <tbody>
+            <tr th:each="item: ${items}" class="clickable-row">
+              <td th:text="${item.name}"></td>
+              <td th:text="${item.initialPrice}"></td>
+              
+              <td th:if="${item.status}==1" th:text="Active"></td>
+              <td th:unless="${item.status}==1" th:text="Inactive"></td>
+              
+              <td th:text="${item.timeLimit}"></td>
+              <td th:text="${item.auctionType.name}"></td>
+              <td><a th:href="@{/item/detail/{id} (id=${item.id})}"></a></td>
+            </tr>
+          </tbody>
+          <!--Table body-->
+        </table>
+        <!--Table-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+$(document).ready(function() {
+
+    $('#tablePreview tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+
+});
+
+</script>
+</html>

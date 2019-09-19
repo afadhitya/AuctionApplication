@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text=${item.name}></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div th:include="navbar"></div>
+
+<div class="container">
+    <div style="width:900px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
+    	<div th:if="${param.warning}" class="alert alert-warning">
+    		You don't have permission to change status of this item
+    	</div>
+        <div class="card">
+            <div class="card-header">
+	            <div class="row">
+	            	<div class="col-9">
+	            		<h2 th:text = "${item.name}" /> 
+	            	</div>
+	                <div th:if="${user.role}==ADMIN" class="col-3">
+	                	<a th:if="${item.status}==1" th:href="@{/item/inactive/{id} (id=${item.id})}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Set As Inactive</a>
+	                	<a th:if="${item.status}==0 and ${item.finalPrice} != 0" class="btn btn-primary btn-lg disabled" role="button" aria-pressed="true">Set As Inactive</a>
+	                	<a th:if="${item.status}==0 and ${item.finalPrice} == 0" th:href="@{/item/active/{id} (id=${item.id})}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Set As Active</a>
+	                </div>
+	            </div>
+            </div>
+            <div class="card-block" style="padding: 24px;">
+	            <div class="row">
+	            <div class="col-6">
+	                <h5>Initial Price </h5><h5 th:text = "${item.initialPrice}" /><br>
+	                <h5>Auction Type </h5><h5 th:text="${item.auctionType.name}"/><br>
+	                <div th:if="${item.status}==0"><h5>Final Price </h5><h5 th:text = "${item.finalPrice}" /></div>
+	            </div>
+	            <div class="col-6">
+	                <div th:if="${usernameWinner}!=null"><h5>Winner </h5><h5 th:text = "${usernameWinner}" /><br></div>
+	                <div th:if="${item.auctionType.id}==2"><h5>Highest Bid </h5><h5 th:text = "${highestBid}" /><br></div>
+	                <h5>Status </h5><h5 th:if="${item.status}==1" th:text="Active" />
+	                				<h5 th:unless="${item.status}==1" th:text="Inactive" /><br>
+	               	<h5>Time Limit </h5><h5 th:text="${item.timeLimit}"/>
+	            </div> 	
+               	</div>
+               	
+               	<div>
+	               	<form action="#" th:action="@{/auction/bid-value/{id}/{username} (id=${item.id}, username=${user.username})}" th:object="${auction}" method="post">
+	                    <fieldset><br>
+		                    <div th:if="${param.error}" class="alert alert-danger">
+	                           Failed Save Bid - 
+	                           <span th:if="${response.status}==false" th:text="${response.message}"></span>
+	                        </div>
+	                        
+	                        <div th:if="${param.success}" class="alert alert-success">
+	                           Your bid has been saved! 
+	                        </div>
+	                        
+	                        <!-- Login Controls -->
+	                        <div class="form-group">
+	                        	<br>
+	                            <label for="txtBidValue"><h5>Enter Your Bid Value!</h5></label>
+	                            <input type="text" th:field="*{bidValue}" class="form-control" id="bidValue" name="bidValue"
+	                                   placeholder="Bid Value">
+	                        </div>
+	
+	                        <!-- Login Button -->
+	                        <div class="form-actions" style="margin-top: 12px;">
+	                        	<button th:if="${item.status}==1" type="submit" class="btn btn-success">Bid!</button>
+	                            <button th:if="${item.status}==0" type="submit" class="btn btn-success" disabled>Bid!</button>
+	                        </div>
+	                    </fieldset>
+	                </form>
+	        	</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
